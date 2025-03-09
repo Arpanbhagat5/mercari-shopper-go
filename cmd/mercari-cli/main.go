@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"mercari-shopper-go/internal/interface-adaptors/api"
 	"mercari-shopper-go/internal/usecase"
 )
 
@@ -9,21 +10,18 @@ import (
 func main() {
 	fmt.Println("Mercari Shopper CLI Application Started!!")
 
-	// create a new instance of the dummy search item usecase
-	searchItemUsecase := usecase.DummySearchItemUsecase{}
+	// --- Dummy api search with dummy api client---
+	searchItemClient := api.DummyMercariAPIClient{}
+	searchItemUseCase := usecase.NewRealSearchItemsUseCase(searchItemClient)
 
-	// create a dummy query
-	query := "dummy object"
 
-	// search for dummy object
-	items, err := searchItemUsecase.SearchItems(query)
+	api_query := "dummy api object"
+	items, err := searchItemUseCase.SearchItems(api_query)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
-
-	// print the search results
-	fmt.Println("Search Results:")
+	fmt.Println("\nSearch results (via API Adapter - but dummy API for now) for:", api_query)
 	if len(items) == 0 {
 		fmt.Println("No items found.")
 		return
@@ -31,5 +29,32 @@ func main() {
 	for _, item := range items {
 		fmt.Println(item.Summarize())
 	}
+
+	// --- end of dummy api search with dummy api client ---
+
+	// ------------------------------------------------------------
+
+	// --- Dummy api search with dummy hardcoded response ---
+	searchItemsUseCase := usecase.DummySearchItemUsecase{}
+
+	// create a dummy query
+	dummy_query := "dummy object"
+	// search for dummy object
+	dummy_items, err := searchItemsUseCase.SearchItems(dummy_query)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+	// print the search results
+	fmt.Println("Search Results (via hardcoded data) for:", dummy_query)
+	if len(dummy_items) == 0 {
+		fmt.Println("No dummy_items found.")
+		return
+	}
+	for _, item := range dummy_items {
+		fmt.Println(item.Summarize())
+	}
+	// --- end of dummy api search with dummy hardcoded response ---
+
 }
 
