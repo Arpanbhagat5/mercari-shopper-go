@@ -1,0 +1,9 @@
+
+1st implementation:
+
+Defined the MercariItem struct in the domain layer.
+Created a SearchItemsUseCase interface in the usecase layer, defining the contract for searching items.
+Created a dummy implementation of SearchItemsUseCase that returns hardcoded data.
+Updated our main.go in the cmd/mercari-cli to use the SearchItemsUseCase and display the results.
+
+version 2
